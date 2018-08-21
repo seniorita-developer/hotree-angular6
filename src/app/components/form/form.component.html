@@ -1,0 +1,127 @@
+<div class="container">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <section formGroupName="about">
+            <h2>About</h2>
+            <div class="row">
+                <label class="required label_left" [ngClass]="{'label_required_invalid': about.get('title').hasError('required') && about.get('title').touched}">TITLE</label>
+                <div>
+                    <div class="form-field">
+                        <input class="field-text" type="text" formControlName="title" placeholder="Make it short and clear" required></div>
+                </div>
+                <span class="alert" *ngIf="about.get('title').hasError('required') && about.get('title').touched">
+            Title cannot be empty
+        </span>
+            </div>
+            <div class="row row_keep_top">
+                <label class="required label_left" [ngClass]="{'label_required_invalid': about.get('description').hasError('required') && about.get('description').touched}">DESCRIPTION</label>
+                <div>
+                    <textarea formControlName="description" maxlength="140" placeholder="Write about your event, be creative" required></textarea>
+                    <div class="comment-below">
+                        <span>Max length 140 character</span>
+                        <span>{{description_length}}/140</span>
+                    </div>
+                </div>
+                <span class="alert" *ngIf="about.get('description').hasError('required') 
+            && about.get('description').touched">
+            Description cannot be empty
+        </span>
+            </div>
+
+            <div class="row">
+                <label class="label_left">CATEGORY</label>
+                <div class="select-field">
+                    <select class="field-text" formControlName="category">
+                 <option value="" selected disabled hidden>Select category(skills. interests, locations)</option> 
+                <option *ngFor="let c of categories" [value]="c.id">{{ c.name }} </option>
+            </select>
+                </div>
+
+                <div class="comment-below comment_below_category">
+                    Describes topic and people who should be interested in this event
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="label_left">PAYMENT</label>
+                <div class="payment">
+                    <label><input type="radio" formControlName="paid_event" [value]="false" checked />Free event</label>
+                    <label><input type="radio" formControlName="paid_event" [value]="true" />Paid event</label>
+                    <span *ngIf="about.get('paid_event').value === true">
+                        <input class="field-number field-number-fee" formControlName="event_fee" placeholder="Fee" required />
+                        $
+                    </span>
+                </div>
+                <span class="alert" *ngIf="about.get('event_fee').enabled && about.get('event_fee').hasError('required') && about.get('event_fee').touched">
+                        Fee cannot be empty
+                    </span>
+            </div>
+
+            <div class="row">
+                <label class="label_left">REWARD</label>
+                <div class="reward">
+                    <input class="field-number" type="number" formControlName="reward" placeholder="Number">
+                    <span>reward points for attendance</span>
+                </div>
+            </div>
+        </section>
+
+        <section formGroupName="coordinator">
+            <h2>Coordinator</h2>
+            <div class="row">
+                <label class="required label_left" [ngClass]="{'label_required_invalid': coordinator.get('responsible').hasError('required') && coordinator.get('responsible').touched}">RESPONSIBLE</label>
+                <div class="select-field">
+                    <select class="field-text" formControlName="responsible" required>
+                    <option disabled="" value="default" hidden>Me - {{loggedUser}}</option>
+                    <option disabled="">Me</option>
+                    <option class="field-select" [value]="loggedUserId">{{loggedUser}}</option>
+                    <option disabled="">Others</option>
+                    <option class="field-select" *ngFor="let e of employees" [value]="e.id">
+                        {{ e.name + " " + e.lastname }}
+                    </option>
+                </select>
+                </div>
+                <span class="alert" *ngIf="coordinator.get('responsible').hasError('required') && coordinator.get('responsible').touched">
+            Field coordinator cannot be empty
+        </span>
+            </div>
+
+            <div class="row">
+                <label class="label_left"> EMAIL </label>
+                <div class="form-field">
+                    <input class="field-text" type="email" formControlName="email" placeholder="Email"></div>
+                <span class="alert" *ngIf="coordinator.get('email').hasError('pattern')">Email must be valid</span>
+            </div>
+
+        </section>
+
+
+        <section formGroupName="when">
+            <h2>When</h2>
+            <div class="row">
+                <label class="required label_left" [ngClass]="{
+                        'label_required_invalid': (when.get('start_date').hasError('required') && when.get('start_date').touched) 
+                        ||  (when.get('start_time').hasError('required') && when.get('start_time').touched)}">STARTS ON</label>
+                <div class="date">
+                    <input type="date" [min]="today" formControlName="start_date" required><span>at</span>
+                    <input type="time" formControlName="start_time" min="00:00" max="11:59" required>
+                    <div class="radio">
+                        <input type="radio" formControlName="start_time_format" value="AM" checked> AM
+                    </div>
+                    <div class="radio">
+                        <input type="radio" formControlName="start_time_format" value="PM"> PM
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="label_left">DURATION</label>
+                <input class="field-number" type="number" formControlName="duration" placeholder="Number"> hour
+            </div>
+
+        </section>
+
+        <button type="submit" [disabled]="form.invalid">PUBLISH EVENT</button>
+
+    </form>
+
+</div>

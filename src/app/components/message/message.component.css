@@ -1,0 +1,27 @@
+.container {
+    margin: 30px auto;
+    max-width: 800px;
+    height: 90px;
+    background-color: #F0FCF3;
+    padding-left: 30px;
+    padding-top: 10px;
+    min-width: 300px;
+    border-radius: 3px;
+    box-shadow: 0 0 5px #ebebeb;
+    text-align: left;
+}
+
+.success {
+    color: #70BF75;
+    font-size: 20px;
+}
+
+.success-info {
+    color: #676767;
+    font-size: 14px;
+}
+
+p {
+    margin: 10px;
+}
+
